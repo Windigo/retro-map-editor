@@ -396,6 +396,8 @@ GetaSprite 0, 1
 Free Shape 1
 
 VWait 50
+
+XINCLUDE "mapdata.ab3"
 `;
 }
 // ─── Game AB3 (#CURRENT_LEVEL + XINCLUDE mapinit + BLITZ gameloop) ─────────────
@@ -820,8 +822,6 @@ Until Joyb(1) = 2
 
 AMIGA
 End
-
-XINCLUDE "mapdata.ab3"
 `;
 }
 // ─── Mapdata AB3 (alleen .MapData en .FlagData labels) ────────────────────────

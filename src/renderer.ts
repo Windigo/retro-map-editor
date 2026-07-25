@@ -434,6 +434,8 @@ GetaSprite 0, 1
 Free Shape 1
 
 VWait 50
+
+XINCLUDE "mapdata.ab3"
 `;
 }
 
@@ -860,8 +862,6 @@ Until Joyb(1) = 2
 
 AMIGA
 End
-
-XINCLUDE "mapdata.ab3"
 `;
 }
 

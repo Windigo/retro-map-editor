@@ -93,3 +93,5 @@ GetaSprite 0, 1
 Free Shape 1
 
 VWait 50
+
+XINCLUDE "mapdata.ab3"
