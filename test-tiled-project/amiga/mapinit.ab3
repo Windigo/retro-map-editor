@@ -1,0 +1,95 @@
+; ---------------------------------------------------------------
+; mapinit.ab3 -- Map initialisatie via Tiled2Retro
+; 3 levels beschikbaar (level 0..2)
+; Wordt ingevoegd in game.ab3 -- #CURRENT_LEVEL moet daarin
+; gedefinieerd zijn v??r XINCLUDE "mapinit.ab3"
+; ---------------------------------------------------------------
+
+; --- Constantes ---
+#MAP_COLS       = 20
+#MAP_ROWS       = 16
+#TILE_SIZE      = 16
+#CELLS          = 320
+#SHEET_COLS     = 49
+#SHEET_W        = 784
+#SHEET_H        = 352
+#BITPLANES      = 3
+#SPRITE_TILE    = 459
+#SPRITE_SRCX    = 288
+#SPRITE_SRCY    = 144
+
+#FLAG_FLOOR  = 1
+#FLAG_WALL   = 2
+#FLAG_LADDER = 4
+#MAX_VY      = 6
+
+; --- Arrays ---
+Dim tilemap.w(#CELLS)
+Dim tileflags.w(#CELLS)
+
+; ==============================================================
+; AMIGA mode: laad tilesheet + data + bouw BitMap
+; ==============================================================
+
+; --- Laad tilesheet IFF ---
+BitMap 0, #SHEET_W, #SHEET_H, #BITPLANES
+LoadBitMap 0, "tiles_3bp.iff", 0
+
+; --- Lees data van het gekozen level (Restore naar genummerd label) ---
+If #CURRENT_LEVEL = 0
+  Restore MapData0
+  For i = 0 To #CELLS - 1
+    Read tilemap(i)
+  Next i
+  Restore FlagData0
+  For i = 0 To #CELLS - 1
+    Read tileflags(i)
+  Next i
+EndIf
+If #CURRENT_LEVEL = 1
+  Restore MapData1
+  For i = 0 To #CELLS - 1
+    Read tilemap(i)
+  Next i
+  Restore FlagData1
+  For i = 0 To #CELLS - 1
+    Read tileflags(i)
+  Next i
+EndIf
+If #CURRENT_LEVEL = 2
+  Restore MapData2
+  For i = 0 To #CELLS - 1
+    Read tilemap(i)
+  Next i
+  Restore FlagData2
+  For i = 0 To #CELLS - 1
+    Read tileflags(i)
+  Next i
+EndIf
+
+; --- Bouw BitMap 1 ---
+BitMap 1, 320, 256, #BITPLANES
+
+For y = 0 To #MAP_ROWS - 1
+  For x = 0 To #MAP_COLS - 1
+    idx    = y * #MAP_COLS + x
+    tile.w = tilemap(idx)
+    If tile = 0 Then Goto skipBuild
+    sx.w = (tile MOD #SHEET_COLS) * #TILE_SIZE
+    sy.w = tile / #SHEET_COLS
+    sy   = sy * #TILE_SIZE
+    Use BitMap 0
+    GetaShape 0, sx, sy, #TILE_SIZE, #TILE_SIZE
+    Use BitMap 1
+    Blit 0, x * #TILE_SIZE, y * #TILE_SIZE
+    .skipBuild:
+  Next x
+Next y
+
+; --- Pak sprite-tile uit de sheet ---
+Use BitMap 0
+GetaShape 1, #SPRITE_SRCX, #SPRITE_SRCY, #TILE_SIZE, #TILE_SIZE
+GetaSprite 0, 1
+Free Shape 1
+
+VWait 50

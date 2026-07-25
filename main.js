@@ -155,6 +155,7 @@ electron_1.ipcMain.handle('export-amiga', async (_event, data) => {
         fs.mkdirSync(amigaDir, { recursive: true });
         fs.writeFileSync(path.join(amigaDir, `tiles_${data.iffBitplanes}bp.iff`), Buffer.from(data.iffData));
         fs.writeFileSync(path.join(amigaDir, 'mapdata.ab3'), Buffer.from(data.mapdataAb3Data));
+        fs.writeFileSync(path.join(amigaDir, 'mapinit.ab3'), Buffer.from(data.mapInitAb3Data));
         fs.writeFileSync(path.join(amigaDir, 'game.ab3'), Buffer.from(data.gameAb3Data));
         return true;
     }
