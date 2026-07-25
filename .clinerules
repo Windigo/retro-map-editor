@@ -6,7 +6,40 @@
   gegenereerd moet worden, mag je de markdown-bestanden in de map `blitzbasic_manuals/` lezen
   als referentie.
 - Begin altijd met `blitzbasic_manuals/Guide_To_Blitz_Basic.md`.
-- Raadpleeg indien nodig aanvullende markdown-bestanden in dezelfde map voor extra context.
+- Voor AmiBlitz3-specifieke zaken (compiler directives, XTRA headers, object limits, includes,
+  Blitzlibs) raadpleeg `blitzbasic_manuals/amiblitz3/Amiblitz3.guide.md`.
+- Raadpleeg indien nodig aanvullende markdown-bestanden in dezelfde mappen voor extra context.
+
+### AmiBlitz3-specifieke regels
+
+#### XTRA header (CRITICAL voor .ab3 bestanden!)
+AmiBlitz3 vereist een `; XTRA` comment-header met compiler/debugger/object-limit
+instellingen aan het begin van elk `.ab3` hoofdbestand. Zonder deze header kan 3.13b
+crash-en met trap #8 (privilege violation).
+- Minimale header voor chipset/game projecten:
+  ```blitzbasic
+  ; XTRA
+  ; Embedded .xtra Header
+  ;
+  ; Compiler
+  ; -------------------------------------------------------
+  ; MakeSmallest    = 0
+  ;
+  ; Debugger
+  ; -------------------------------------------------------
+  ; RuntimeDebug    = 0
+  ;
+  ; Blitz Objects
+  ; -------------------------------------------------------
+  ; Max Shape       = 200
+  ; Max Sprite      = 20
+  ; Max Palette     = 4
+  ; Max BitMap      = 10
+  ; Max Slice       = 10
+  ; /XTRA
+  ```
+- 3.10 negeert deze header, 3.13b vereist hem.
+- De header wordt door PED geparsed en automatisch verborgen voor de gebruiker.
 
 ## BlitzBasic / AmiBlitz codeer-conventies
 
